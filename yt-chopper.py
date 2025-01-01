@@ -2,17 +2,26 @@ import os
 import string
 import pathlib
 
-#####
+####
 # Directions:
 # Make .txt file with same name as video file with timestamps formatted 
-# 0:10; 0:20; outputTitle.mp4; Metadata Title; Track#
-### Example:
+# 0:20; outputTitle.mp4; Metadata Title; Track#
+## Example:
 ### videofile.mp4
 ### videofile.txt
-# 0:10; 0:20; 1_outputTitle.mp4; Metadata Title; 1
-# 0:20; 0:30; 2_outputTitle.mp4; Second Metadata Title; 2
+##
+# 0:20; 1_outputTitle.mp4; Metadata Title; 1
+# 0:30; 2_outputTitle.mp4; Second Metadata Title; 2
+##
+# This will make a video clip from 0:00 to 0:20 (named "1_outputTitle.mp4")
+# and another for 0:20 to 0:30 (named "2_outputTitle.mp4").
 ###
-# This will make a clip from 0:10 to 0:20, and another for 0:20 to 0:30. 
+# Not all options are neccesary! You can include as little as timestamps!
+##
+# 0:20
+# 0:30
+##
+# This would make the same clips, but autogenerate a filename!
 ####
 
 def getTimestamps(timestamp_filename):
