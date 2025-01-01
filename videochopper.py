@@ -50,31 +50,30 @@ for videoFilename in videoQueue:
 
     while timestampCounter < timestampLength:
        currentTimestamp = timestamps[timestampCounter].split(";")
-       # 0:00; 1:00; filename.mp4; File Title; 1
-       # Start; Stop; filename.mp4; File Title; File Track #
+       # 1:00; filename.mp4; File Title; 1
+       # Stop; filename.mp4; File Title; File Track #
 
-       startTime = currentTimestamp[0].strip()
-       stopTime = currentTimestamp[1].strip()
+       stopTime = currentTimestamp[0].strip()
 
        # Temporary name incase no input.
        outputFilename = f"clip_{startTime.replace(':', '-')}_{stopTime.replace(':', '-')}_{videoFilename[:-4]}.mp4"
        outputMetadata = ""
 
-       if len(currentTimestamp) > 2:
-           outputFilename = currentTimestamp[2].strip()
+       if len(currentTimestamp) > 1:
+           outputFilename = currentTimestamp[1].strip()
        
+       if len(currentTimestamp) > 2:
+           outputMetadata += f" -metadata title=\"{currentTimestamp[2].strip()}\""
+
        if len(currentTimestamp) > 3:
-           outputMetadata += f" -metadata title=\"{currentTimestamp[3].strip()}\""
+           outputMetadata += f" -metadata track=\"{currentTimestamp[3].strip()}\""
 
-       if len(currentTimestamp) > 4:
-           outputMetadata += f" -metadata track=\"{currentTimestamp[4].strip()}\""
-
-
-       if len(currentTimestamp) < 4:
+       if len(currentTimestamp) < 3:
            os.system(f"ffmpeg -ss {startTime} -to {stopTime} -i \"{videoFilename}\" \"{outputFilename}\"")
        else:
            os.system(f"ffmpeg -ss {startTime} -to {stopTime} -i \"{videoFilename}\" \"tmp_{outputFilename}\"")
            os.system(f"ffmpeg -i \"tmp_{outputFilename}\" -codec copy{outputMetadata} \"{outputFilename}\"")
            os.system(f"rm \"tmp_{outputFilename}\"")
 
+       startTime = stopTime
        timestampCounter += 1
